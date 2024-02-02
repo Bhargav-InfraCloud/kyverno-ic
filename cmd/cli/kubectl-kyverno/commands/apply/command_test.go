@@ -414,3 +414,41 @@ func TestCommandHelp(t *testing.T) {
 	assert.NoError(t, err)
 	assert.True(t, strings.HasPrefix(string(out), cmd.Long))
 }
+
+func TestCommandPluralFlags(t *testing.T) {
+	testCases := []struct {
+		name    string
+		cmdArgs []string
+	}{
+		{
+			name: "Run apply with --resources flag",
+			cmdArgs: []string{
+				"../../_testdata/apply/test-1/policy.yaml",
+				"--resources",
+				"../../_testdata/apply/test-1/resources.yaml",
+			},
+		},
+		{
+			name: "Run apply with --exceptions flag",
+			cmdArgs: []string{
+				"../../_testdata/apply/test-1/policy.yaml",
+				"--resource",
+				"../../_testdata/apply/test-1/resources.yaml",
+				"--exceptions",
+				"../../_testdata/exceptions/exception.yaml",
+			},
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			cmd := Command()
+			assert.NotNil(t, cmd)
+
+			cmd.SetArgs(tt.cmdArgs)
+
+			err := cmd.Execute()
+			assert.NoError(t, err)
+		})
+	}
+}
