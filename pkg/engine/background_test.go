@@ -47,6 +47,17 @@ func Test_engine_filterRule(t *testing.T) {
 			args: args{
 				rule: kyvernov1.Rule{
 					Name: testRuleName,
+					MatchResources: kyvernov1.MatchResources{
+						Any: kyvernov1.ResourceFilters{
+							{
+								ResourceDescription: kyvernov1.ResourceDescription{
+									Kinds: []string{
+										"Depployment",
+									},
+								},
+							},
+						},
+					},
 					Generation: kyvernov1.Generation{
 						ResourceSpec: kyvernov1.ResourceSpec{
 							APIVersion: "apps/v1",
